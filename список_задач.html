@@ -1,0 +1,160 @@
+<!DOCTYPE html />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Использование событий</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Dancing+Script:wght@600&family=Grape+Nuts&family=Indie+Flower&family=Playfair+Display:wght@700&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+<style>
+*{
+    padding: 0;
+    margin: 0;
+}
+body {
+    background: url(/projects/spisok_del/тетрадь.png);
+    background-size: cover;
+    font-family: 'Bad Script', cursive;
+    color:rgba(118, 6, 247, 0.911)
+}
+.task {
+    display: flex;
+    align-items: center;
+    border: 1px solid gray;
+    padding: 3px 8px;
+    margin: 2px 120px;
+}
+
+.task p {
+    margin-left: 4px;
+}
+
+.completed p{
+    text-decoration: line-through;
+}
+.input-panel {
+    width: 500px;
+    padding: 70px;
+    margin-left: 70px;
+   
+}
+.input-panel button{
+    padding: 4px;
+    width:25%;
+    cursor: pointer;
+}
+.input-panel input{
+    height: 23px;
+    width: auto;
+}
+
+h1{
+    font-size: 3rem;
+}
+p{
+    font-size: 2rem;   
+}
+#start-message{
+    margin-left: 150px;
+    margin-top: -5%;
+}
+.end_button{
+    background-color: #dbc089; 
+    border-radius: 10%;
+    margin-left:12%;
+    margin-top: 3%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+</style>
+
+</head>
+<body>
+    <div class="title">
+       <h1 align = "center"> Твой список продуктов в магазин</h1>
+        <p align = "center">Бери с собой, пиши и вычеркивай</p>
+    </div>
+    <div class="input-panel">
+        <input type="text" id="task-name-input" placeholder="" title="Рекомендуем начать с вафелек">
+        >
+        <button id="add-task-btn">Добавить покупку</button>
+    </div>
+   
+    <div class="task-list">
+        <p id="start-message">Нет новых продуктов</p>  
+    </div>
+    <div class="end_button">Очистить список продуктов</div>
+   
+
+    <script>
+        let taskNameInput = document.querySelector('#task-name-input'); // находим поле ввода
+        let addTaskButton = document.querySelector('#add-task-btn');  // добавляет задачу
+        let endButton = document.querySelector('.end_button');
+        console.log(endButton);
+        let startMessage = document.querySelector('#start-message');
+        let taskList = document.querySelector('.task-list'); // создаем переменную, в которой находятся задания, к которым будет добавляться навые задания
+
+
+addTaskButton.addEventListener('click', addTaskHandler); // addTaskHandler добавляет задачу
+
+// делаем функционал на нажатье Escape
+taskNameInput.addEventListener('keydown', function(e){
+    if(e.code == "Enter") addTaskHandler();
+})
+
+
+
+function createTask(text){
+    let div = document.createElement('div');
+    div.classList.add('task');
+
+    let input = document.createElement('input');
+    input.addEventListener('click', changeTaskState);
+    input. type = 'checkbox';
+
+    let p = document.createElement('p');
+    p.innerText = text;
+
+    div.append(input);
+    div.append(p);
+
+    return div;
+    }
+
+    function changeTaskState(e){
+        if(e.target.nodeName != 'input' && e.target.type != 'checkbox'){
+            return;
+        }
+
+
+        if(e.target.checked){
+            e.target.parentElement.classList.add("completed");  // если чекбокс с галочкой, добавляем класс completed для родительского єлемента
+        } else {
+            e.target.parentElement.classList.remove("completed"); // иначе убираем класс completed
+        }
+    } 
+    function addTaskHandler(){
+
+        if (taskNameInput.value) {  // если текст в поле введен
+            if (!startMessage.hidden) startMessage.hidden = true;
+
+        let newTask = createTask(taskNameInput.value);
+        taskList.append(newTask);
+        taskNameInput.value = '';
+    } else{  // если поле ввода пустое
+        alert('Введите новую задачу');
+    }
+}
+// делаем функционал на удаление всех задач
+endButton.addEventListener('click', clearall);
+function clearall(){
+taskList.remove(); 
+clearall();  }
+
+
+    </script>
+</body>
+</html>
+
